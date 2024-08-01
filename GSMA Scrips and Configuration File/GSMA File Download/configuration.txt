@@ -1,0 +1,12 @@
+
+fileBackupPath="/u02/ceirdata/logs/GSMAMODULE/GSMAbackup/CompleteFile"
+deltaFileBackupPath="/u02/ceirdata/logs/GSMAMODULE/GSMAbackup/DeltaFile"
+fileDownloadPrcoessPath="/u02/ceirdata/logs/GSMAMODULE/GSMADataFiles" 
+fileProcessModulePath="/u01/ceirapp/GSMAMODULE"
+#file size is 40 mb
+fileSize="40000000"
+processLogFile="/u02/ceirdata/logs/GSMAMODULE/FileProcessLogs"
+serverid=1
+alertAPIURL=http://139.59.5.244:9509/eirs/alert
+destServerName=QA-01
+fileCpyAPIURL=http://139.59.5.244:9509/eirs/fileCopyApi

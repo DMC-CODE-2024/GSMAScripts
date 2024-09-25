@@ -1,0 +1,22 @@
+<Configuration status="DEBUG">
+<Properties>
+<Property name="app-logs-dir">${env:LOG_HOME}/logs/${sys:module.name}</Property>
+<Property name="log-file-name">${sys:module.name}</Property>
+</Properties>
+<Appenders>
+<RollingFile name="LogToFile" fileName="${app-logs-dir}/${log-file-name}.log" filePattern="${app-logs-dir}/${log-file-name}-%d{yyyy-MM-dd-HH}-%i.log">
+<PatternLayout>
+<Pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%C] %-5level - %msg%n</Pattern>
+</PatternLayout>
+<Policies>
+<TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+<SizeBasedTriggeringPolicy size="250 MB"/>
+</Policies>
+</RollingFile>
+</Appenders>
+<Loggers>
+<Root level="info">
+<AppenderRef ref="LogToFile"/>
+</Root>
+</Loggers>
+</Configuration>

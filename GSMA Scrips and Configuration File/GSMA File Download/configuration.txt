@@ -1,0 +1,26 @@
+
+
+fileBackupPath="${DATA_HOME}/gsma_tac_module/backup/file/"
+deltaFileBackupPath="${DATA_HOME}/gsma_tac_module/backup/delta_file/"
+gsmaFileDownloadPath="${DATA_HOME}/gsma_tac_module/input/" 
+fileProcessModulePath="${APP_HOME}/gsma_tac_module/"
+#file size is 40 mb
+fileSize="40000000"
+processLogPath="${LOG_HOME}/logs/gsma_tac/"
+destServerName=QA-01
+gsmaFileProcessInitial="Initial"
+gsmaFileProcessPathNotFound="Configuration variables not found"
+gsmaIncompleteFileDownload="GSMA file is not downloaded properly"
+gsmaFileUnzippingFailed="GSMA downloaded file unzip failed"
+gsmaDeltaFileBlank="SUCCESS"
+gsmaFileProcessNotComplete="GSMA Data Processor Failed"
+gsmaFileDownloadCompletedMsg="SUCCESS"
+gsmaDownloadUrlDetail="GSMA URL Details missing"
+module_name_process="GSMA TAC Module java"
+feature_name_process="GSMA TAC Module java"
+module_name_download="GSMA TAC Module script"
+feature_name_download="GSMA TAC Module script"
+file_path_alert="File Download path"
+log_path_alert="Log Path for process"
+process_path_alert="File process module path"
+

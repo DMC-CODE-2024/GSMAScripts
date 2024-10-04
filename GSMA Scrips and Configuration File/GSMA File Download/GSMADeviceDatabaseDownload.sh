@@ -250,7 +250,7 @@ fi
 #8 start java process
 cd $fileProcessModulePath
 #java -Dlog4j.configuration=file:./log4j.properties -jar GsmaTacUpdate-0.1.jar -Dspring.config.location=:./conf.properties  1> $processLogPath/GSMAFileProcessLOG_$(date +%Y%m%d%H%M%S).log		
-java -Dlog4j.configurationFile=file:./log4j2.xml -Dmodule.name=${module_name} -Dspring.config.location=:./configuration.properties -jar gsma_tac-0.1.jar 1>/dev/null 2>${LOG_HOME}/${module_name}.error
+java -Dlog4j.configurationFile=file:./log4j2.xml -Dmodule.name=${module_name} -Dgsma_configuration_file=./application.properties -Dspring.config.location=:./configuration.properties -jar gsma_tac-0.1.jar 1>/dev/null 2>${LOG_HOME}/${module_name}.error
 
 
 #9 Check java process status in modules_audit_trail table  & Move processed DeviceDatabase.jsonl_yyyymmdd to backup folder and update latest DeviceDatabase.jsonl_ProcessedFile if status is 200 (success)

@@ -3,10 +3,8 @@
 ##1 Make GSMA process start entry in  audit table 
 #source . /root/.bash_profile
 source ~/.bash_profile
-. ${APP_HOME}/gsma_tac_module/GSMAFileDownload/configuration.txt
+. ${APP_HOME}/gsma_tac_module/GSMAFileDownload/script.properties
 var=""
-serverName=$HOSTNAME
-module_name=gsma_tac
 echo "$(date +%F_%H-%M-%S): server name = $serverName"
 commonConfigurationFile=$commonConfigurationFilePath
 #GSMAConfigurationFile=$GSMAConfigurationFilePath2

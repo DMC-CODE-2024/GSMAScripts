@@ -245,7 +245,7 @@ exit
 fi
 #8 start java process
 cd $fileProcessModulePath
-java -Dlog4j.configurationFile=./log4j2.xml -Dlog.level=${log_level} -Dlog.path=${log_path} -Dmodule.name=${module_name} -Dspring.config.location=./application.properties,file:${commonConfigurationFile} -jar ${build} 1>/dev/null 2>${log_path}/${module_name}.error 
+java -Dlog4j.configurationFile=./log4j2.xml -Dlog.level=${log_level} -Dlog.path=${log_path} -Dmodule.name=${module_name} -Dspring.config.location=./application.properties,file:${commonConfigurationFile} -jar ${build} 1>/dev/null 2>${log_path}/${module_name}/${module_name}.error 
 
 #java -Dlog4j.configurationFile=file:./log4j2.xml -Dmodule.name=${module_name} Dspring.config.location=./application.properties,file:${APP_HOME}/configuration/configuration.properties -jar gsma_tac-0.1.jar 1>/dev/null 2>${LOG_HOME}/logs/${module_name}/${module_name}.error
 

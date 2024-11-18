@@ -5,17 +5,16 @@ log_path=$2
 build=$3
 ##1 Make GSMA process start entry in  audit table 
 source ~/.bash_profile
+. ${APP_HOME}/${build}_module/script/script.properties
 var=""
 echo "$(date +%F_%H-%M-%S): server name = $serverName"
 commonConfigurationFile=$commonConfigurationFilePath
-GSMAConfigurationFile=$GSMAConfigurationFilePath
-source $GSMAConfigurationFile
 source $commonConfigurationFile
-
 get_value() {
     key=$1
     grep "^$key=" "$commonConfigurationFile" | cut -d'=' -f2
 }
+
 
 executionstartTime=$(date +%s.%N)
 dbDecryptPassword=$(java -jar  ${APP_HOME}/encryption_utility/PasswordDecryptor-0.1.jar dbEncyptPassword)
@@ -114,6 +113,8 @@ curl -X POST "$filecopyUrl" -H "accept: */*" -H "Content-Type: application/json"
 #Function ends here for File Copy 
 #All Common function defination ends here
 
+
+
 # process starts from here going to make an entry in audit table 
 if [ $databaseFlag == "Oracle" ]
 then
@@ -148,6 +149,7 @@ if [ "$tacFileURL" = "$var" ] || [ "$tacFileURLUsername" = "$var" ] || [ "$tacFi
 			update_module_audit_table 501 "Fail" "$gsmaDownloadUrlDetail" 0 0 "$finalExecutionTime" 0 0	
 exit 2;
 fi
+
 
 # Check configuration file download path or process path is configured or not 
 
@@ -216,8 +218,9 @@ processedFile="$(find  -maxdepth 1 -name 'DeviceDatabase.jsonl_ProcessedFile' -t
 if [ "$processedFile" == "DeviceDatabase.jsonl_ProcessedFile" ];
 		then
 		echo "$(date +%F_%H-%M-%S) :- DeviceDatabase.jsonl_ProcessedFile file comparision starting."
-        diff  DeviceDatabase.jsonl_ProcessedFile DeviceDatabase.jsonl|grep ">"|cut -c 3- > DeviceDeltaDatabase.jsonl
-        echo "$(date +%F_%H-%M-%S) :- file comparision finish and result save to DeviceDeltaDatabase.jsonl file ,going to start file process code "
+        #diff  DeviceDatabase.jsonl_ProcessedFile DeviceDatabase.jsonl|grep ">"|cut -c 3- > DeviceDeltaDatabase.jsonl
+        diff <(sort DeviceDatabase.jsonl_ProcessedFile | tr -d '\r' | sed 's/[[:space:]]//g' | grep -v '^[[:space:]]*$') <(sort DeviceDatabase.jsonl | tr -d '\r' | sed 's/[[:space:]]//g' | grep -v '^[[:space:]]*$') | grep ">" | cut -c 3- > DeviceDeltaDatabase.jsonl
+		echo "$(date +%F_%H-%M-%S) :- file comparision finish and result save to DeviceDeltaDatabase.jsonl file ,going to start file process code "
 else
 		echo "$(date +%F_%H-%M-%S) : copying DeviceDatabase.jsonl to DeviceDeltaDatabase.jsonl"
         cd $gsmaFileDownloadPath
@@ -245,11 +248,12 @@ exit
 fi
 #8 start java process
 cd $fileProcessModulePath
-java -Dlog4j.configurationFile=./log4j2.xml -Dlog.level=${log_level} -Dlog.path=${log_path} -Dmodule.name=${module_name} -Dspring.config.location=./application.properties,file:${commonConfigurationFile} -jar ${build} 1>/dev/null 2>${log_path}/${module_name}/${module_name}.error 
+java -Dlog4j.configurationFile=./log4j2.xml -Dlog.level=${log_level} -Dlog.path=${log_path} -Dmodule.name=${module_name} -Dspring.config.location=./application.properties,file:${commonConfigurationFile} -jar ${build} 1>/dev/null 2>${log_path}/logs/${module_name}/${module_name}.error 
 
-#java -Dlog4j.configurationFile=file:./log4j2.xml -Dmodule.name=${module_name} Dspring.config.location=./application.properties,file:${APP_HOME}/configuration/configuration.properties -jar gsma_tac-0.1.jar 1>/dev/null 2>${LOG_HOME}/logs/${module_name}/${module_name}.error
+#java -Dlog4j.configuration=file:./log4j.properties -jar GsmaTacUpdate-0.1.jar -Dspring.config.location=:./conf.properties  1> $processLogPath/GSMAFileProcessLOG_$(date +%Y%m%d%H%M%S).log		
 
-#java -Dlog4j.configurationFile=file:./log4j2.xml -Dmodule.name=${module_name} -Dgsma_configuration_file=./conf.properties -Dspring.config.location=:./configuration.properties -jar ${module_name}.jar 1>/dev/null 2>${LOG_HOME}/${module_name}_module/${module_name}.error
+#java -Dlog4j.configurationFile=file:./log4j2.xml -Dmodule.name=${module_name} -Dgsma_configuration_file=./application.properties -Dspring.config.location=:./configuration.properties -jar gsma_tac-0.1.jar 1>/dev/null 2>${LOG_HOME}/${module_name}.error
+
 
 #9 Check java process status in modules_audit_trail table  & Move processed DeviceDatabase.jsonl_yyyymmdd to backup folder and update latest DeviceDatabase.jsonl_ProcessedFile if status is 200 (success)
 cd $gsmaFileDownloadPath 
